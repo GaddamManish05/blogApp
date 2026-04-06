@@ -1,5 +1,5 @@
 import { Navigate, NavLink, Outlet } from "react-router";
-import { pageWrapper, navLinkClass, navLinkActiveClass, divider, submitBtn } from "../styles/common";
+import { pageWrapper, navLinkClass, navLinkActiveClass, divider, submitBtn } from "../styles/Common.js";
 import { userAuth } from "../AuthStore/AuthStore";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
