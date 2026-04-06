@@ -12,9 +12,10 @@ config()
 
 const app = exp();
 app.use(cors({
-    origin : ['http://localhost:5173'],
-    credentials:true
+    origin: true,
+    credentials: true
 }));
+
 app.use(exp.json())
 app.use(cookieParser())
 //connect api's
@@ -24,9 +25,8 @@ app.use('/admin-api',adminApp);
 app.use('/common-api',commonApp)
 
 const connectDB = async() => {
-  const PORT = process.env.PORT || 3000
+  const PORT = process.env.PORT || 4000
     try{
-        console.log(process.env.DB_URL)
         await connect(process.env.DB_URL);
         console.log("DB Connection done");
         app.listen(PORT,() => {
