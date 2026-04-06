@@ -24,11 +24,12 @@ app.use('/admin-api',adminApp);
 app.use('/common-api',commonApp)
 
 const connectDB = async() => {
+  const PORT = process.env.PORT || 3000
     try{
         console.log(process.env.DB_URL)
         await connect(process.env.DB_URL);
         console.log("DB Connection done");
-        app.listen(process.env.PORT,() => {
+        app.listen(PORT,() => {
             console.log("Server started");
         })
     }catch(err){
