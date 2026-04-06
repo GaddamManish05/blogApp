@@ -15,6 +15,7 @@ import {
 } from "../styles/Common.js";
 
 function EditArticle() {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -40,8 +41,9 @@ function EditArticle() {
   const updateArticle = async (data) => {
     console.log(data);
     data.articleId = article._id;
-    let res = await axios.put("http://localhost:4000/author-api/articles", data, { withCredentials: true });
+    let res = await axios.put(`${BASE_URL}/author-api/articles`, data, { withCredentials: true });
     console.log("res update atricle", res);
+    toast.success("Article Updated")
     navigate(`/article/${article._id}`, {
       state: res.data.payload,
     });

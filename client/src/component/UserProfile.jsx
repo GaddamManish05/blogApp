@@ -20,7 +20,7 @@ import {
 } from '../styles/Common'
 
 function UserProfile() {
-
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate()
   const logout = userAuth(state => state.logout)
 
@@ -42,7 +42,7 @@ function UserProfile() {
     try {
 
       let res = await axios.get(
-        'http://localhost:4000/user-api/articles',
+        `${BASE_URL}/user-api/articles`,
         { withCredentials: true }
       )
 

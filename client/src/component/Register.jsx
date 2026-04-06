@@ -17,7 +17,7 @@ import {
 } from '../styles/Common'
 
 function Register() {
-
+  const BASE_URL = import.meta.env.VITE_API_URL;
   let navigate = useNavigate()
   const { register, handleSubmit } = useForm()
 
@@ -44,12 +44,12 @@ function Register() {
     try {
 
       if (role === "user") {
-        let resObj = await axios.post('http://localhost:4000/user-api/users', formData)
+        let resObj = await axios.post(`${BASE_URL}/user-api/users`, formData)
         console.log(resObj.data)
       }
 
       if (role === "author") {
-        let resObj = await axios.post('http://localhost:4000/author-api/users', formData)
+        let resObj = await axios.post(`${BASE_URL}/author-api/users`, formData)
         console.log(resObj.data)
       }
 

@@ -16,6 +16,7 @@ import {
 } from "../styles/Common.js";
 
 function AuthorArticles() {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const user = userAuth((state) => state.currentUser);
 
@@ -33,7 +34,7 @@ function AuthorArticles() {
 
       try {
         const id = user?._id || user?.userId
-        const res = await axios.get(`http://localhost:4000/author-api/articles/${id}`, { withCredentials: true });
+        const res = await axios.get(`${BASE_URL}/author-api/articles/${id}`, { withCredentials: true });
 
         setArticles(res.data.payload);
         console.log(res.data);

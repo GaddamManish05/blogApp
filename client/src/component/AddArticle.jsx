@@ -6,6 +6,7 @@ import { errorClass,loadingClass,inputClass,submitBtn,cardClass,headingClass } f
 import toast from "react-hot-toast";
 
 function AddArticle() {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const { register, handleSubmit } = useForm()
   // const [title, setTitle] = useState("");
   // const [category, setCategory] = useState("");
@@ -19,7 +20,7 @@ function AddArticle() {
         setLoading(true);
         console.log(newArticle);
         setError(null);
-        let res = await axios.post('http://localhost:4000/author-api/articles',newArticle,{ withCredentials : true });
+        let res = await axios.post(`${BASE_URL}/author-api/articles`,newArticle,{ withCredentials : true });
         let data = res.data.payload;
         console.log(data);
         toast.success("Article Created");

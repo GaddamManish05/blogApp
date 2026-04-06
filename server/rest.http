@@ -4,7 +4,7 @@ Content-Type: application/json
 {
     "firstName" : "debbadwar",
     "lastName" : "baswaraj",
-    "email" : "example@gmail.com",
+    "email" : "example1@gmail.com",
     "password" : "bunny123",
     "profileImageUrl" : "http://example.image"
 }
@@ -26,7 +26,7 @@ Content-Type: application/json
 {
     "firstName" : "bukka",
     "lastName" : "saketh",
-    "email" : "saket12@gmail.com",
+    "email" : "author@gmail.com",
     "password" : "saketh123",
     "profileImageUrl" : "http://example.image"
 }

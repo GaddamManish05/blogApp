@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 
 function WriteArticles() {
-
+  const BASE_URL = import.meta.env.VITE_API_URL;
   let { register,handleSubmit } = useForm();
   let navigate = useNavigate();
   // let [title,setTitle] = useState([]);
@@ -21,7 +21,7 @@ function WriteArticles() {
     try{
         setLoading(true);
         setError(null);
-        let response = await axios.post('http://localhost:4000/author-api/articles',newArticle,{ withCredentials: true })
+        let response = await axios.post(`${BASE_URL}/author-api/articles`,newArticle,{ withCredentials: true })
         console.log(response.data);
         toast.success("Article Created");
         navigate('/author-profile');

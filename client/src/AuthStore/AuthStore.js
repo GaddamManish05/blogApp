@@ -13,7 +13,7 @@ export const userAuth = create((set) => ({
                 loading : true,
                 error : null
             })
-            let res = await axios.post('http://localhost:4000/common-api/login',userCredObj,{ withCredentials : true });
+            let res = await axios.post(`${import.meta.env.VITE_API_URL}/common-api/login`,userCredObj,{ withCredentials : true });
             console.log("res is ",res.data);
             set({
                 loading : false,
@@ -39,7 +39,7 @@ export const userAuth = create((set) => ({
             loading:true,
             error : null
         })
-        let res = await axios.get('http://localhost:4000/common-api/logout',{ withCredentials : true});
+        let res = await axios.get(`${import.meta.env.VITE_API_URL}/common-api/logout`,{ withCredentials : true});
         console.log("res is",res);
         set({
             currentUser : null,
@@ -58,7 +58,7 @@ export const userAuth = create((set) => ({
     checkUser: async () => {
         try {
             set({ loading: true });
-            const res = await axios.get("http://localhost:4000/common-api/check-auth", { withCredentials: true });
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/common-api/check-auth`, { withCredentials: true });
             console.log('res in store', res.data);
             set({
                 currentUser: res.data.payload,

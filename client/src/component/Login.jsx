@@ -17,7 +17,7 @@ import {
 } from '../styles/Common'
 
 function Login() {
-
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate()
 
   const login = userAuth(state => state.login)

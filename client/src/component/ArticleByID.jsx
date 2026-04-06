@@ -22,6 +22,7 @@ import {
 } from "../styles/Common.js";
 
 function ArticleByID() {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ function ArticleByID() {
       setLoading(true);
 
       try {
-        const res = await axios.get(`http://localhost:4000/user-api/article/${id}`, { withCredentials: true });
+        const res = await axios.get(`${BASE_URL}/user-api/article/${id}`, { withCredentials: true });
 
         setArticle(res.data.payload);
       } catch (err) {
@@ -69,7 +70,7 @@ function ArticleByID() {
 
     try {
       const res = await axios.patch(
-        `http://localhost:4000/author-api/articles/${id}/status`,
+        `${BASE_URL}/author-api/articles/${id}/status`,
         { isArticleActive: newStatus },
         { withCredentials: true },
       );
