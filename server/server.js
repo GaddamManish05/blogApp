@@ -25,6 +25,7 @@ app.use('/common-api',commonApp)
 
 const connectDB = async() => {
     try{
+        console.log(process.env.DB_URL)
         await connect(process.env.DB_URL);
         console.log("DB Connection done");
         app.listen(process.env.PORT,() => {

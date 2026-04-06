@@ -4,7 +4,7 @@ Content-Type: application/json
 {
     "firstName" : "debbadwar",
     "lastName" : "baswaraj",
-    "email" : "bunn1@gmail.com",
+    "email" : "example@gmail.com",
     "password" : "bunny123",
     "profileImageUrl" : "http://example.image"
 }
