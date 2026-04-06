@@ -12,8 +12,8 @@ config()
 
 const app = exp();
 app.use(cors({
-    origin: true,
-    credentials: true
+  origin: "https://blog-app-h8se.vercel.app",
+  credentials: true
 }));
 
 app.use(exp.json())
