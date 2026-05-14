@@ -1,8 +1,13 @@
 export const verifyToken = (...allowedRoles) => {
     return async (req, res, next) => {
+
+        console.log("VERIFY TOKEN STARTED");
+
         try {
 
             let token = req.cookies?.token;
+
+            console.log("TOKEN:", token);
 
             if (!token) {
                 return res.status(401).json({
@@ -15,6 +20,8 @@ export const verifyToken = (...allowedRoles) => {
                 process.env.JWT_TOKEN
             );
 
+            console.log("DECODED:", decodedToken);
+
             if (
                 allowedRoles.length > 0 &&
                 !allowedRoles.includes(decodedToken.role)
@@ -26,21 +33,13 @@ export const verifyToken = (...allowedRoles) => {
 
             req.user = decodedToken;
 
+            console.log("VERIFY PASSED");
+
             next();
 
         } catch (err) {
 
-            if (err.name === "TokenExpiredError") {
-                return res.status(401).json({
-                    message: "Session Expired"
-                });
-            }
-
-            if (err.name === "JsonWebTokenError") {
-                return res.status(401).json({
-                    message: "Invalid Token"
-                });
-            }
+            console.log("VERIFY ERROR:", err);
 
             return res.status(500).json({
                 message: "Server Error"
