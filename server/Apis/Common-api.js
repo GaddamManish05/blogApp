@@ -11,12 +11,12 @@ export const commonApp = express.Router();
 commonApp.post('/login',async(req,res) => {
     let userCred = req.body;
     let {token,safe} = await authenticate(userCred);
-    res.cookie("token",token,
-    {
-        httpOnly:true,
-        sameSite : "lax",
-        secure : false
-    })
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 24 * 60 * 60 * 1000
+    });
     res.status(200).json({message : "login success",payload : safe})
 })
 
@@ -26,8 +26,8 @@ commonApp.get('/logout',async(req,res) => {
     console.log('hi')
     res.clearCookie('token',{
         httpOnly : true,
-        secure : false,
-        sameSite : "lax"
+        secure : true,
+        sameSite : "None"
     });
     res.status(200).json({message : "Logout Successful"})
 })
@@ -51,6 +51,6 @@ commonApp.put('/password-update',verifyToken,async(req,res) => {
 });
 // page reload sol
 commonApp.get('/check-auth',verifyToken("USER","AUTHOR","ADMIN"),(req,res) =>{
-    console.log(req.user.profileImageUrl);
+    console.log(req.user?.profileImageUrl);
     res.status(200).json({message : "Authenticated" , payload : req.user})
 })

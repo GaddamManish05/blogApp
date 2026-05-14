@@ -91,7 +91,7 @@ authorApp.get("/articles/:authorId", verifyToken("AUTHOR"), async (req, res) => 
 
 // edit an article
 authorApp.put('/articles',verifyToken("AUTHOR"),async(req,res) =>{
-    // get modified articl
+    // get modified article
     let {author,articleId,title,category,content} = req.body;
     let authorId = req.user.userId;
     console.log(authorId)
@@ -109,7 +109,9 @@ authorApp.put('/articles',verifyToken("AUTHOR"),async(req,res) =>{
 // delete an article
 authorApp.patch('/articles-delete/:id',verifyToken("AUTHOR"),async(req,res) => {
     let id = req.params.id
-    let {authorId,isArticleActive} = req.body;
+    let {isArticleActive} = req.body;
+    let authorId = req.user.userId;
+    
     let articleDoc = await ArticleModel.findOne({_id : id , author : authorId});
     if(!articleDoc){
         res.status(401).json({message : "Article Not found"});
@@ -118,7 +120,7 @@ authorApp.patch('/articles-delete/:id',verifyToken("AUTHOR"),async(req,res) => {
         return res.status(403).json({message : "Forbidden"});
     }
 
-    if(articleDoc.isArticleActive === isArticleActive){
+    if(articleDoc?.isArticleActive === isArticleActive){
         return res.status(400).json({message :`Article is already ${isArticleActive ? "active" : "deleted"}`});
     }
 
@@ -127,7 +129,7 @@ authorApp.patch('/articles-delete/:id',verifyToken("AUTHOR"),async(req,res) => {
 
     res.status(200).json({
     message: `Article ${isArticleActive ? "restored" : "deleted"} successfully`,
-    articleDoc,
+    payload : articleDoc
     })
 })
 

@@ -12,7 +12,10 @@ config()
 
 const app = exp();
 app.use(cors({
-  origin: "https://blog-app-h8se.vercel.app",
+  origin: [
+    "http://localhost:5173",
+    "https://blog-app-h8se.vercel.app"
+  ],
   credentials: true
 }));
 
@@ -37,18 +40,12 @@ const connectDB = async() => {
     }
 }
 connectDB()
-app.post('/logout',(req,res) => {
-    res.clearCookie('token',{
-        httpOnly : true,
-        secure : true,
-        sameSite : "none"
-    });
-    res.status(200).json({message : "Logout Successful"})
-})
-app.use((req,res,next) => {
-    res.json({message : `${req.url} is Invalid Path`})
-})
 
+app.use((req,res) => {
+    res.status(404).json({
+        message: `${req.url} is Invalid Path`
+    });
+});
 
 app.use((err, req, res, next) => {
 

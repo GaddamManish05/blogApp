@@ -51,9 +51,9 @@ userApp.post(
 // Read All Articles
 userApp.get('/articles',verifyToken("USER"),async(req,res) => {
     // extract all the articles from article collection
-    let articleDocs = await ArticleModel.find({isArticleActive : true});
+    let articleDocs = await ArticleModel.find({isArticleActive : true}).limit(5);
     console.log(articleDocs);
-    // send response all aricle
+    // send response all article
     res.status(200).json({message : "Articles" , payload : articleDocs});
 })
 // Add Comment to an article
