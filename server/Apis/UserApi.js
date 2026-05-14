@@ -62,7 +62,7 @@ userApp.get(
 
       let articleDocs = await ArticleModel.find({
         isArticleActive : true
-      }).limit(5);
+      }).limit(9);
 
       console.log("Articles:", articleDocs);
 
