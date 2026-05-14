@@ -49,12 +49,37 @@ userApp.post(
         }
         );
 // Read All Articles
-userApp.get('/articles',verifyToken("USER"),async(req,res) => {
-    // extract all the articles from article collection
-    let articleDocs = await ArticleModel.find({isArticleActive : true}).limit(5);
-    console.log(articleDocs);
-    // send response all article
-    res.status(200).json({message : "Articles" , payload : articleDocs});
+userApp.get(
+  '/articles',
+  verifyToken("USER"),
+  async(req,res)=>{
+
+    try{
+
+      console.log("Route reached");
+
+      console.log("ArticleModel:", ArticleModel);
+
+      let articleDocs = await ArticleModel.find({
+        isArticleActive : true
+      }).limit(5);
+
+      console.log("Articles:", articleDocs);
+
+      res.status(200).json({
+        message : "Articles",
+        payload : articleDocs
+      });
+
+    }catch(err){
+
+      console.log("ARTICLE ERROR:", err);
+
+      res.status(500).json({
+        message : "Articles Fetch Failed",
+        error : err.message
+      });
+    }
 })
 // Add Comment to an article
 userApp.put('/comments',verifyToken("USER"),async(req,res) => {

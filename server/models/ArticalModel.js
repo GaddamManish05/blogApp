@@ -36,7 +36,7 @@ const ArticleSchema = new Schema({
         default : true
     }
 },{
-    strict : "throw",
+    strict : true,
     timestamps : true,
     versionKey : false
 })
