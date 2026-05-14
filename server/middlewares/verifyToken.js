@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken'
+
 export const verifyToken = (...allowedRoles) => {
     return async (req, res, next) => {
 
