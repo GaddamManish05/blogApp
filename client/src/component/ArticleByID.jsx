@@ -25,20 +25,21 @@ function ArticleByID() {
   const BASE_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const location = useLocation();
+  
   const navigate = useNavigate();
-
+  // console.log("Location is",location.state);
   const user = userAuth((state) => state.currentUser);
-
+  
   const [article, setArticle] = useState(location.state || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  console.log("articles",article)
   useEffect(() => {
     if (article) return;
 
     const getArticle = async () => {
       setLoading(true);
-
+      // console.log("Get Articles from User-api");
       try {
         const res = await axios.get(`${BASE_URL}/user-api/article/${id}`, { withCredentials: true });
 
@@ -64,20 +65,20 @@ function ArticleByID() {
   // delete & restore article
   const toggleArticleStatus = async () => {
     const newStatus = !article.isArticleActive;
-
+    console.log("newState",newStatus); // false
     const confirmMsg = newStatus ? "Restore this article?" : "Delete this article?";
     if (!window.confirm(confirmMsg)) return;
 
     try {
       const res = await axios.patch(
-        `${BASE_URL}/author-api/articles/${id}/status`,
+        `${BASE_URL}/author-api/articles-delete/${id}`,
         { isArticleActive: newStatus },
         { withCredentials: true },
       );
 
       console.log("SUCCESS:", res.data);
 
-      setArticle(res.data.payload);
+      setArticle(res.data?.payload);
 
       toast.success(res.data.message);
     } catch (err) {

@@ -15,7 +15,7 @@ export const headingClass = "text-2xl md:text-3xl font-bold text-white"
 
 export const subHeadingClass = "text-lg font-semibold text-gray-300"
 
-export const bodyText = "text-gray-400 leading-relaxed text-base"
+export const bodyText = "text-gray-400 leading-relaxed text-base"  
 
 export const mutedText = "text-sm text-gray-500"
 
@@ -73,7 +73,7 @@ export const tagClass = "text-xs font-semibold text-orange-400 border border-ora
 
 export const articleStatusActive = "text-green-600 w-3/9 rounded-xl mx-auto"
 
-export const articleStatusDeleted = "text-red-500 bg-red-200"
+export const articleStatusDeleted = "text-red-600 w-3/9 rounded-xl mx-auto"
 // ─── Feedback ─────────────────────────────────────────
 export const errorClass = "bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg px-4 py-3 text-sm"
 
@@ -153,3 +153,5 @@ export const editBtn =
 
 export const deleteBtn =
   "px-4 py-2 rounded-lg border border-red-500 text-red-400 hover:bg-red-500 hover:text-black transition-all duration-300"
+
+articleStatusActive

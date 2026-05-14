@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { userAuth } from '../AuthStore/AuthStore.js'
 import axios from 'axios'
@@ -14,7 +14,6 @@ import {
   articleGrid,
   articleCardClass,
   articleTitle,
-  articleBody,
   articleMeta,
   ghostBtn
 } from '../styles/Common'
@@ -27,27 +26,22 @@ function UserProfile() {
   const [error, setError] = useState(null)
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(false)
-
   const onLogOut = async () => {
     await logout()
     toast.success("Logged Out Successfully")
     navigate('/login')
   }
-
-  const onGetArticles = async () => {
+useEffect(()=>{
+  const onGetArticles = async() => {
 
     setError(null)
     setLoading(true)
 
     try {
 
-      let res = await axios.get(
-        `${BASE_URL}/user-api/articles`,
-        { withCredentials: true }
-      )
-
+      let res = await axios.get(`${BASE_URL}/user-api/articles`,{ withCredentials: true })
       setArticles(res.data.payload)
-
+      console.log('res is',res.data.payload);
     } catch (err) {
 
       setError(err.message)
@@ -58,6 +52,9 @@ function UserProfile() {
 
     }
   }
+  onGetArticles();
+
+},[])
 
   return (
 
@@ -72,10 +69,6 @@ function UserProfile() {
         {/* Buttons */}
 
         <div className="flex gap-4 mb-8">
-
-          <button onClick={onGetArticles} className={primaryBtn}>
-            Load Articles
-          </button>
 
           <button onClick={onLogOut} className={primaryBtn}>
             Logout

@@ -42,7 +42,7 @@ function EditArticle() {
     console.log(data);
     data.articleId = article._id;
     let res = await axios.put(`${BASE_URL}/author-api/articles`, data, { withCredentials: true });
-    console.log("res update atricle", res);
+    console.log("res update article", res);
     toast.success("Article Updated")
     navigate(`/article/${article._id}`, {
       state: res.data.payload,
@@ -69,7 +69,6 @@ function EditArticle() {
           <label className={labelClass}>Category</label>
 
           <select className={inputClass} {...register("category", { required: "Category required" })}>
-            <option value="">Select category</option>
             <option value="technology">Technology</option>
             <option value="programming">Programming</option>
             <option value="ai">AI</option>
