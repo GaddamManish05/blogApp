@@ -2,6 +2,7 @@ import { useParams, useLocation, useNavigate, Link} from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { userAuth } from "../AuthStore/AuthStore.js";
+import {CommentSection} from './CommentSection.jsx'
 import { toast } from "react-hot-toast";
 
 
@@ -140,6 +141,11 @@ function ArticleByID() {
 
       {/* Footer */}
       <div className={articleFooter}>Last updated: {formatDate(article.updatedAt)}</div>
+      
+      <CommentSection
+        article={article}
+        setArticle={setArticle}
+      />
     </div>
   );
 }
