@@ -63,7 +63,7 @@ function AdminUsersTable({
                         w-10
                         h-10
                         rounded-full
-                        bg-gray-700
+                        bg-white
                         flex
                         items-center
                         justify-center
