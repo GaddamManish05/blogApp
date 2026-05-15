@@ -44,6 +44,10 @@ function Login() {
         toast.success("Logged In Successfully")
         navigate('/author-profile')
       }
+      if (currentUser?.role === "ADMIN") {
+        toast.success("Logged In Successfully")
+        navigate('/admin-profile')
+      }
 
     }
 
