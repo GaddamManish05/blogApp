@@ -6,28 +6,97 @@ export const adminApp = exp.Router();
 
 // read all the articles (optional)
 // Block 
-adminApp.put('/block',verifyToken, async(req,res) => {
-    // extract the user details like id
-    let {authorId} = req.body
-    // if user present block the user by updating it to isActive is to false
-    let modifiedUser = await UserTypeModel.findByIdAndUpdate(authorId,{$set :{isActive : false}},{new : true})
-    if(!modifiedUser){
-        return res.status(401).json({message : "User Not found"})
+adminApp.patch(
+  '/toggle-user-status/:id',
+
+  verifyToken("ADMIN"),
+
+  async(req,res)=>{
+
+    try{
+
+      let { id } = req.params;
+
+      let { isActive } = req.body;
+
+      let modifiedUser =
+        await UserTypeModel.findByIdAndUpdate(
+
+          id,
+
+          {
+            $set:{
+              isActive:isActive
+            }
+          },
+
+          {
+            new:true
+          }
+
+        ).select("-password");
+
+      if(!modifiedUser){
+
+        return res.status(404).json({
+
+          message:"User Not Found"
+        });
+      }
+
+      res.status(200).json({
+
+        message:isActive
+          ? "User Unblocked"
+          : "User Blocked",
+
+        payload:modifiedUser
+
+      });
+
+    }catch(err){
+
+      console.log(err);
+
+      res.status(500).json({
+
+        message:"Operation Failed",
+
+        error:err.message
+
+      });
     }
-    // send the response as blocked
-    res.status(200).json({message : "User Blocked" , user : modifiedUser});
 })
+adminApp.get(
+  '/users',
 
+  verifyToken("ADMIN"),
 
-// unblock user roles
-adminApp.put('/unblock',verifyToken,async(req,res) => {
-    // extract the user cred id
-    let {authorId} = req.body
-    // find the id in db and modify it into unvlock
-    let modifiedUser = await UserTypeModel.findByIdAndUpdate(authorId,{$set : {isActive : true}},{new : true})
-    if(!modifiedUser){
-        return res.status(401).json({message : "User Not found"})
+  async(req,res)=>{
+
+    try{
+
+      let users = await UserTypeModel.find()
+        .select("-password");
+
+      res.status(200).json({
+
+        message:"Users",
+
+        payload:users
+
+      });
+
+    }catch(err){
+
+      console.log(err);
+
+      res.status(500).json({
+
+        message:"Failed to fetch users",
+
+        error:err.message
+
+      });
     }
-   // send the response 
-    res.status(200).json({message : "User Unblocked" , user : modifiedUser});
 })
