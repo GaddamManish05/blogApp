@@ -2,7 +2,7 @@ import { useParams, useLocation, useNavigate, Link} from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { userAuth } from "../AuthStore/AuthStore.js";
-import {CommentSection} from './CommentSection.jsx'
+import CommentSection from './CommentSection.jsx'
 import { toast } from "react-hot-toast";
 
 
@@ -53,7 +53,7 @@ function ArticleByID() {
     };
 
     getArticle();
-  }, [id]);
+  }, [id,BASE_URL]);
 
   const formatDate = (date) => {
     return new Date(date).toLocaleString("en-IN", {
