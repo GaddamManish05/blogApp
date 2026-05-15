@@ -10,11 +10,11 @@ function AdminUsersTable({
 
     <div className="overflow-x-auto">
 
-      <table className="w-full border-collapse">
+      <table className="w-full border-collapse text-white">
 
         <thead>
 
-          <tr className="border-b border-gray-700">
+          <tr className="border-b border-gray-700 text-white">
 
             <th className="text-left p-4">
               User
@@ -47,7 +47,13 @@ function AdminUsersTable({
 
               <tr
                 key={userObj._id}
-                className="border-b border-gray-800"
+                className="
+                  border-b
+                  border-gray-800
+                  text-white
+                  hover:bg-gray-900
+                  transition
+                "
               >
 
                 {/* USER */}
@@ -64,6 +70,7 @@ function AdminUsersTable({
                         h-10
                         rounded-full
                         bg-white
+                        text-black
                         flex
                         items-center
                         justify-center
@@ -94,7 +101,7 @@ function AdminUsersTable({
 
                 {/* EMAIL */}
 
-                <td className="p-4">
+                <td className="p-4 text-gray-200">
 
                   {userObj.email}
 
@@ -104,7 +111,17 @@ function AdminUsersTable({
 
                 <td className="p-4">
 
-                  {userObj.role}
+                  <span
+                    className="
+                      px-3
+                      py-1
+                      rounded-full
+                      bg-blue-700
+                      text-sm
+                    "
+                  >
+                    {userObj.role}
+                  </span>
 
                 </td>
 
@@ -130,6 +147,7 @@ function AdminUsersTable({
                         ? "Active"
                         : "Blocked"
                     }
+
                   </span>
 
                 </td>
@@ -149,10 +167,11 @@ function AdminUsersTable({
                       py-2
                       rounded-lg
                       text-white
+                      transition
                       ${
                         userObj.isActive
-                          ? "bg-red-600"
-                          : "bg-green-600"
+                          ? "bg-red-600 hover:bg-red-700"
+                          : "bg-green-600 hover:bg-green-700"
                       }
                     `}
                   >
@@ -161,6 +180,7 @@ function AdminUsersTable({
                         ? "Block"
                         : "Unblock"
                     }
+
                   </button>
 
                 </td>
