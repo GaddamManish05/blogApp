@@ -1,14 +1,18 @@
 import { Schema,model } from "mongoose";
 
 // create a user schema
-const userCommnetSchema = new Schema({
+const userCommentSchema = new Schema({
     user : {
         type : Schema.Types.ObjectId,
         ref : 'user'
     },
     comment : {
-        type : String
+        type : String,
+        trim : true,
+        maxlength : [500,"Comment too long"]
     }
+},{
+    timestamps : true
 });
 
 //create article schema
@@ -30,7 +34,7 @@ const ArticleSchema = new Schema({
         type : String,
         required : [true,"Content is required"]
     },
-    comment : [userCommnetSchema],
+    comment : [userCommentSchema],
     isArticleActive : {
         type : Boolean,
         default : true

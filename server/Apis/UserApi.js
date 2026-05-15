@@ -82,20 +82,218 @@ userApp.get(
     }
 })
 // Add Comment to an article
-userApp.put('/comments',verifyToken("USER"),async(req,res) => {
-    // get article as from req parameter
-    let {articleId,user,comment} = req.body;
-    // verify wheather article present or not
-    let articleStatus = await ArticleModel.findOne({_id : articleId});
-    console.log(articleStatus)
-    if(user !== req.user.userId){ 
-        return res.status(403).json({message : "Forbidden"});
+userApp.put(
+  '/comments',
+  verifyToken("USER"),
+  async(req,res)=>{
+
+    try{
+
+      // extract data
+      let { articleId, comment } = req.body;
+
+      // validation
+      if(!comment?.trim()){
+
+        return res.status(400).json({
+          message:"Comment cannot be empty"
+        });
+      }
+
+      // verify article exists
+      let article = await ArticleModel.findOne({
+        _id:articleId,
+        isArticleActive:true
+      });
+
+      if(!article){
+
+        return res.status(404).json({
+          message:"Article not found"
+        });
+      }
+
+      // add comment
+      let updatedArticle = await ArticleModel.findOneAndUpdate(
+
+        {
+          _id:articleId
+        },
+
+        {
+          $push:{
+            comment:{
+              user:req.user.userId,
+              comment:comment.trim()
+            }
+          }
+        },
+
+        {
+          new:true
+        }
+
+      )
+
+      // populate author
+      .populate("author")
+
+      // populate comment users
+      .populate("comment.user");
+
+      // send response
+      res.status(200).json({
+
+        message:"Comment Added",
+
+        payload:updatedArticle
+
+      });
+
+    }catch(err){
+
+      console.log(err);
+
+      res.status(500).json({
+
+        message:"Failed to add comment",
+
+        error:err.message
+
+      });
     }
-    if(!articleStatus){
-        return res.status(400).json({message : "Article not found"});
+})
+// article by id..
+userApp.get(
+  '/article/:id',
+  verifyToken("USER","AUTHOR"),
+  async(req,res)=>{
+
+    try{
+
+      let { id } = req.params;
+
+      // get article
+      let article = await ArticleModel.findOne({
+        _id:id,
+        isArticleActive:true
+      })
+
+      // populate author details
+      .populate("author")
+
+      // populate comment users
+      .populate("comment.user");
+
+      // article not found
+      if(!article){
+
+        return res.status(404).json({
+          message:"Article not found"
+        });
+      }
+
+      // send response
+      res.status(200).json({
+        message:"Article",
+        payload:article
+      });
+
+    }catch(err){
+
+      console.log(err);
+
+      res.status(500).json({
+        message:"Failed to fetch article",
+        error:err.message
+      });
     }
-    // add comments to article if valid and update in db
-    let addComment = await ArticleModel.findOneAndUpdate({_id : articleId , isArticleActive : true},{$push : {comment : {user : articleId , comment : comment}}},{new : true});
-    // send res
-    res.status(200).json({message : "Comment Added to article"});
+})
+
+// delete the comment 
+userApp.delete(
+  '/comments/:articleId/:commentId',
+  verifyToken("USER"),
+  async(req,res)=>{
+
+    try{
+
+      let { articleId, commentId } = req.params;
+
+      // find article
+      let article = await ArticleModel.findById(articleId);
+
+      if(!article){
+
+        return res.status(404).json({
+          message:"Article not found"
+        });
+      }
+
+      // find comment
+      let targetComment = article.comment.find(
+        (c) => c._id.toString() === commentId
+      );
+
+      if(!targetComment){
+
+        return res.status(404).json({
+          message:"Comment not found"
+        });
+      }
+
+      // ownership check
+      if(
+        targetComment.user.toString() !==
+        req.user.userId
+      ){
+
+        return res.status(403).json({
+          message:"Forbidden"
+        });
+      }
+
+      // delete comment
+      let updatedArticle =
+        await ArticleModel.findByIdAndUpdate(
+
+          articleId,
+
+          {
+            $pull:{
+              comment:{
+                _id:commentId
+              }
+            }
+          },
+
+          {
+            new:true
+          }
+
+        )
+
+        .populate("author")
+        .populate("comment.user");
+
+      res.status(200).json({
+
+        message:"Comment Deleted",
+
+        payload:updatedArticle
+
+      });
+
+    }catch(err){
+
+      console.log(err);
+
+      res.status(500).json({
+
+        message:"Failed to delete comment",
+
+        error:err.message
+
+      });
+    }
 })
