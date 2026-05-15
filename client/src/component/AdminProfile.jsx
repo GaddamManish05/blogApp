@@ -4,11 +4,21 @@ import axios from "axios";
 
 import { toast } from "react-hot-toast";
 
+import { useNavigate } from "react-router";
+
+import { userAuth } from "../AuthStore/AuthStore";
+
 import AdminUsersTable from "./AdminUsersTable";
 
 function AdminProfile() {
 
   const BASE_URL = import.meta.env.VITE_API_URL;
+
+  const navigate = useNavigate();
+
+  const logout = userAuth(
+    state => state.logout
+  );
 
   const [users, setUsers] = useState([]);
 
@@ -55,6 +65,17 @@ function AdminProfile() {
     getUsers();
 
   }, []);
+
+  // logout
+
+  const onLogout = async () => {
+
+    await logout();
+
+    toast.success("Logged Out");
+
+    navigate("/login");
+  };
 
   // block / unblock user
 
@@ -106,7 +127,7 @@ function AdminProfile() {
 
     return (
 
-      <p className="text-center mt-10 text-lg">
+      <p className="text-center mt-10 text-lg text-white">
 
         Loading Users...
 
@@ -130,21 +151,44 @@ function AdminProfile() {
 
   return (
 
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-6 text-white">
 
       {/* heading */}
 
-      <h1 className="text-4xl font-bold mb-8">
+      <div className="flex items-center justify-between mb-8">
 
-        Admin Dashboard
+        <h1 className="text-4xl font-bold">
 
-      </h1>
+          Admin Dashboard
+
+        </h1>
+
+        {/* logout button */}
+
+        <button
+
+          onClick={onLogout}
+
+          className="
+            bg-red-600
+            hover:bg-red-700
+            px-5
+            py-2
+            rounded-lg
+            text-white
+            transition
+          "
+        >
+          Logout
+        </button>
+
+      </div>
 
       {/* total users */}
 
       <div className="mb-6">
 
-        <p className="text-lg text-gray-400">
+        <p className="text-lg text-gray-300">
 
           Total Users: {users.length}
 
