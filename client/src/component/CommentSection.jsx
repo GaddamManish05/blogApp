@@ -23,7 +23,7 @@ function CommentSection({ article, setArticle }) {
   // add comment
   const onAddComment = async () => {
 
-    // empty validation
+    // validation
     if (!comment.trim()) {
       return toast.error("Comment cannot be empty");
     }
@@ -32,7 +32,6 @@ function CommentSection({ article, setArticle }) {
 
       setLoading(true);
 
-      // API call
       const res = await axios.put(
 
         `${BASE_URL}/user-api/comments`,
@@ -106,6 +105,28 @@ function CommentSection({ article, setArticle }) {
         "Delete Failed"
       );
     }
+  };
+
+  // permission check
+  const canDeleteComment = (commentObj) => {
+
+    // comment owner
+    const isCommentOwner =
+      commentObj.user?._id === user?._id;
+
+    // article author
+    const isArticleAuthor =
+      article.author?._id === user?._id;
+
+    // admin (optional future feature)
+    const isAdmin =
+      user?.role === "ADMIN";
+
+    return (
+      isCommentOwner ||
+      isArticleAuthor ||
+      isAdmin
+    );
   };
 
   return (
@@ -250,7 +271,7 @@ function CommentSection({ article, setArticle }) {
                   {/* delete button */}
 
                   {
-                    commentObj.user?._id === user?._id && (
+                    canDeleteComment(commentObj) && (
 
                       <button
 
@@ -263,6 +284,7 @@ function CommentSection({ article, setArticle }) {
                           hover:text-red-500
                           text-sm
                           mt-2
+                          ml-13
                         "
                       >
                         Delete
