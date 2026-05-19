@@ -52,5 +52,8 @@ commonApp.put('/password-update',verifyToken,async(req,res) => {
 // page reload sol
 commonApp.get('/check-auth',verifyToken("USER","AUTHOR","ADMIN"),(req,res) =>{
     console.log(req.user?.profileImageUrl);
+
     res.status(200).json({message : "Authenticated" , payload : req.user})
 })
+
+

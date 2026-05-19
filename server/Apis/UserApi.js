@@ -84,7 +84,7 @@ userApp.get(
 // Add Comment to an article
 userApp.put(
   '/comments',
-  verifyToken("USER"),
+  verifyToken("USER","AUTHOR"),
   async(req,res)=>{
 
     try{
@@ -213,7 +213,7 @@ userApp.get(
 // delete the comment 
 userApp.delete(
   '/comments/:articleId/:commentId',
-  verifyToken("USER"),
+  verifyToken("USER","AUTHOR"),
   async(req,res)=>{
 
     try{
@@ -243,14 +243,10 @@ userApp.delete(
       }
 
       // ownership check
-      if(
-        targetComment.user.toString() !==
-        req.user.userId
-      ){
-
-        return res.status(403).json({
-          message:"Forbidden"
-        });
+      const isCommentOwner = targetComment.user.toString() === req.user.userId;
+      const isArticleAuthor = article.author.toString() === req.user.userId;
+      if(!isCommentOwner && !isArticleAuthor){
+        return res.status(403).json({message:"Forbidden"});
       }
 
       // delete comment
